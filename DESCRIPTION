@@ -2,8 +2,8 @@ Package: mnis
 Type: Package
 Title: Easy Downloading Capabilities for the Members' Name Information
         Service
-Version: 0.1.0
-Date: 2016-12-29
+Version: 0.2.1
+Date: 2017-01-31
 Authors@R: person("Evan Odell", email="evanodell91@gmail.com", role=c("aut", "cre"))
 Author: Evan Odell [aut, cre]
 Maintainer: Evan Odell <evanodell91@gmail.com>
@@ -13,10 +13,10 @@ BugReports: https://github.com/EvanOdell/mnis/issues
 License: MIT + file LICENSE
 LazyData: TRUE
 Imports: httr, jsonlite, utils, plyr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.0
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2016-12-29 14:23:50 UTC; evanodell
+Packaged: 2017-02-06 23:13:31 UTC; evanodell
 Repository: CRAN
-Date/Publication: 2016-12-29 16:17:30
+Date/Publication: 2017-02-07 10:08:55

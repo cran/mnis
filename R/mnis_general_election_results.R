@@ -1,4 +1,4 @@
-#' mnis_GeneralElectionResults
+#' mnis_general_election_results
 #'
 #' Returns a list with details of the search parameter and a data frame with election results.
 #' @param locationType The type of area to return information for. Accepts 'Country', 'Region', 'County', and 'Constituency'. Defaults to 'Country'.
@@ -9,27 +9,12 @@
 #' @keywords mnis
 #' @export
 #' @examples \dontrun{
-#' x <- mnis_GeneralElectionResults(locationType = 'Country', locationName = 'England',
+#' x <- mnis_general_election_results(locationType = 'Country', locationName = 'England',
 #'                                  startDate = '2010-01-01', endDate = '2016-01-01')
 #' }
 
-mnis_GeneralElectionResults <- function(locationType = NULL, locationName = NULL, startDate = NULL, endDate = NULL) {
-    
-    if (is.null(locationType) == TRUE) {
-        locationType <- "Country"
-    }
-    
-    if (is.null(locationName) == TRUE) {
-        locationName <- "Great Britain"
-    }
-    
-    if (is.null(startDate) == TRUE) {
-        startDate <- "1900-01-01"
-    }
-    
-    if (is.null(endDate) == TRUE) {
-        endDate <- Sys.Date()
-    }
+mnis_general_election_results <- function(locationType = "Country", locationName = "Great Britain", startDate = "1900-01-01", 
+    endDate = Sys.Date()) {
     
     locationType <- utils::URLencode(locationType)
     
@@ -58,3 +43,16 @@ mnis_GeneralElectionResults <- function(locationType = NULL, locationName = NULL
     x
     
 }
+
+#' @export
+#' @rdname mnis_general_election_results
+#' @usage NULL
+mnis_GeneralElectionResults <- function(locationType = "Country", locationName = "Great Britain", startDate = "1900-01-01", 
+    endDate = Sys.Date()) {
+    .Deprecated("mnis_general_election_results")
+    mnis_general_election_results(locationType = locationType, locationName = locationName, startDate = startDate, endDate = endDate)
+}
+
+
+
+
