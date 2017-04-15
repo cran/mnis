@@ -1,67 +1,74 @@
 #' mnis_all_members
 #'
-#' @param house The house to which the member belongs. Accepts one of 'all', 'lords' and 'commons', defaults to 'all'.
-#' @param party The party to which a member belongs. Defaults to NULL.
+#' @param house The house to which the member belongs. Accepts one of 'all', 'lords' and 'commons', defaults to 'all'. This parameter is not case sensitive, so 'commons', 'Commons' and 'cOmMOnS' will all return the same data.
+#' @param party The party to which a member belongs. Defaults to NULL, in which case all members are returned, subject to other parameters.
 #' @param joined_since All members who joined after a given date, in yyyy-mm-dd format.
-#' @param tidy Fix the variable names in the data frame to remove special characters and superfluous text, and converts the variable names to all lower case with underscores between each word. Defaults to TRUE.
+#' @param tidy Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to snake_case. Defaults to TRUE.
 #' @keywords mnis
-#' @return A data frame with all members of both houses
+#' @return A tibble with information on all members of the House of Commons and/or the House of Lords that meet the criteria included in the function parameters.
 #' @export
 #'
 #' @examples \dontrun{
-#' x <- mnis_all_members(house = "all", party = NULL, joined_since = NULL, tidy = TRUE)
+#' x <- mnis_all_members(house = 'all', party = NULL, joined_since = NULL, tidy = TRUE)
 #' }
 #'
 
 mnis_all_members <- function(house = "all", party = NULL, joined_since = NULL, tidy = TRUE) {
-
-
-  if (is.na(pmatch(house, c("all", "lords", "commons"))))
-    stop("Please select one of 'all', 'lords' or 'commons' for the parameter 'house'")
-
-  baseurl <- "http://data.parliament.uk/membersdataplatform/services/mnis/members/query/Membership=all"
-
-  if (is.null(party) == FALSE)
-    party <- utils::URLencode(party)
-
-  if (house == "lords") {
-    house <- "|house=lords"
-  } else if (house == "commons") {
-    house <- "|house=commons"
-  } else if (house == "all") {
-    house <- ""
-  }
-
-  if (is.null(party) == FALSE) {
-    party <- paste0("|party*", party)
-  }
-
-  if(is.null(joined_since) == FALSE){
-    joined_since <- paste0("joinedsince=", joined_since)
-  }
-
-  message("Connecting to API")
-
-  query <- paste0(baseurl, house, party, joined_since)
-
-  got <- httr::GET(query, httr::accept_json())
-
-  if (httr::http_type(got) != "application/json") {
-    stop("API did not return json", call. = FALSE)
-  }
-
-  got <- jsonlite::fromJSON(httr::content(got, "text"), flatten = TRUE)
-
-  x <- as.data.frame(got)
-
-  if (tidy == TRUE) {
-
-    x <- mnis_tidy(x)
-
-  } else {
-
-    x
-
-  }
-
+    
+    house <- tolower(house)
+    
+    if (is.na(pmatch(house, c("all", "lords", "commons")))) 
+        stop("Please select one of 'all', 'lords' or 'commons' for the parameter 'house'")
+    
+    baseurl <- "http://data.parliament.uk/membersdataplatform/services/mnis/members/query/Membership=all"
+    
+    if (is.null(party) == FALSE) 
+        party <- utils::URLencode(party)
+    
+    if (house == "lords") {
+        house <- "|house=lords"
+    } else if (house == "commons") {
+        house <- "|house=commons"
+    } else if (house == "all") {
+        house <- ""
+    }
+    
+    if (is.null(party) == FALSE) {
+        party <- paste0("|party*", party)
+    }
+    
+    if (is.null(joined_since) == FALSE) {
+        joined_since <- paste0("joinedsince=", joined_since)
+    }
+    
+    message("Connecting to API")
+    
+    query <- paste0(baseurl, house, party, joined_since, "/HouseMemberships/")
+    
+    got <- httr::GET(query, httr::accept_json())
+    
+    if (httr::http_type(got) != "application/json") {
+        stop("API did not return json", call. = FALSE)
+    }
+    
+    got <- tidy_bom(got)
+    
+    got <- jsonlite::fromJSON(got, flatten = TRUE)
+    
+    x <- got$Members$Member
+    
+    # x <- tibble::as_tibble(x)
+    
+    if (tidy == TRUE) {
+        
+        x <- mnis_tidy(x)
+        
+        x
+        
+    } else {
+        
+        x
+        
+    }
+    
 }

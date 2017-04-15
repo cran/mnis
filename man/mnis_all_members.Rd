@@ -8,23 +8,23 @@ mnis_all_members(house = "all", party = NULL, joined_since = NULL,
   tidy = TRUE)
 }
 \arguments{
-\item{house}{The house to which the member belongs. Accepts one of 'all', 'lords' and 'commons', defaults to 'all'.}
+\item{house}{The house to which the member belongs. Accepts one of 'all', 'lords' and 'commons', defaults to 'all'. This parameter is not case sensitive, so 'commons', 'Commons' and 'cOmMOnS' will all return the same data.}
 
-\item{party}{The party to which a member belongs. Defaults to NULL.}
+\item{party}{The party to which a member belongs. Defaults to NULL, in which case all members are returned, subject to other parameters.}
 
 \item{joined_since}{All members who joined after a given date, in yyyy-mm-dd format.}
 
-\item{tidy}{Fix the variable names in the data frame to remove special characters and superfluous text, and converts the variable names to all lower case with underscores between each word. Defaults to TRUE.}
+\item{tidy}{Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to snake_case. Defaults to TRUE.}
 }
 \value{
-A data frame with all members of both houses
+A tibble with information on all members of the House of Commons and/or the House of Lords that meet the criteria included in the function parameters.
 }
 \description{
 mnis_all_members
 }
 \examples{
 \dontrun{
-x <- mnis_all_members(house = "all", party = NULL, joined_since = NULL, tidy = TRUE)
+x <- mnis_all_members(house = 'all', party = NULL, joined_since = NULL, tidy = TRUE)
 }
 
 }

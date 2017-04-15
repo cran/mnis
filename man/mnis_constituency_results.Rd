@@ -2,28 +2,27 @@
 % Please edit documentation in R/mnis_constituency_results.R
 \name{mnis_constituency_results}
 \alias{mnis_constituency_results}
-\alias{mnis_ConstituencyResults}
 \title{mnis_constituency_results}
 \usage{
-mnis_constituency_results(constituencyId = NULL, electionId = 0,
+mnis_constituency_results(constituency_id = NULL, election_id = 0,
   tidy = TRUE)
 }
 \arguments{
-\item{constituencyId}{The ID of the constituency to return the data for.}
+\item{constituency_id}{The ID of the constituency to return the data for. This parameter cannot be empty.}
 
-\item{electionId}{The ID of the election to return the data for. Defaults to 0, which calls the latest result.}
+\item{election_id}{The ID of the election to return the data for. Defaults to 0, which calls the most recent result, either the result of the last general election, or the result of the last byelection held since that election.}
 
-\item{tidy}{Fix the variable names in the data frame to remove '@' characters and superfluous text. Defaults to TRUE.}
+\item{tidy}{Fix the variable names in the tibble to remove non-alphanumeric characters and superfluous text. Defaults to TRUE.}
 }
 \value{
-A list with details of the constituency, labelled 'details' and a data frame with election results, labelled 'results'. The list and data frame are stored in a single object.
+A list with details of the constituency, labelled 'details' and a tibble with election results, labelled 'results'. The list and tibble are stored in a single object.
 }
 \description{
-Returns a list with details of the constituency and a data frame with election results.
+Returns a list with details of the constituency and a tibble with election results.
 }
 \examples{
 \dontrun{
-x <- mnis_constituency_results(constituencyId = 3709, electionId = 0)
+x <- mnis_constituency_results(constituency_id = 3709, election_id = 0)
 
 }
 }

@@ -2,23 +2,22 @@
 % Please edit documentation in R/mnis_member_date.R
 \name{mnis_member_date}
 \alias{mnis_member_date}
-\alias{mnis_MemberDate}
 \title{mnis_member_date}
 \usage{
-mnis_member_date(ID = NULL, Date = Sys.Date(), tidy = TRUE)
+mnis_member_date(ID = NULL, date = Sys.Date(), tidy = TRUE)
 }
 \arguments{
-\item{ID}{The ID of the member.}
+\item{ID}{The ID of the member. Currently this only accepts IDs from the default membership ID scheme. If empty, the function stops and no data is returned.}
 
-\item{Date}{A date in yyyy-mm-dd format. Defaults to the current system date.}
+\item{date}{A date in yyyy-mm-dd format, on which to return details on the requested member's status. Defaults to the current system date.}
 
-\item{tidy}{Fix the variable names in the data frame to remove special characters and superfluous text, and converts the variable names to all lower case with underscores between each word. Defaults to TRUE.}
+\item{tidy}{Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to snake_case. Defaults to TRUE.}
 }
 \value{
-Returns a data frame with the given member's status on the given date.
+Returns a tibble with the given member's status on the given date.
 }
 \description{
-Returns a data frame with a members status on a given date.
+Returns a tibble with a members status on a given date.
 }
 \examples{
 \dontrun{

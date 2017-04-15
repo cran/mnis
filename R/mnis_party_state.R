@@ -1,24 +1,25 @@
 #' mnis_party_state
 #'
-#' A data frame with information on the numbers and gender of MPs, by party, for the given date.
-#' @param House The house of parliament. Defaults to 'Commons'.
-#' @param Date A date in yyyy-mm-dd format. Defaults to the current system date.
-#' @param tidy Fix the variable names in the data frame to remove special characters and superfluous text, and converts the variable names to all lower case with underscores between each word. Defaults to TRUE.
-#' @return A data frame with information on the numbers and gender of MPs, by party, by party, for the given date.
+#' A tibble with information on the numbers and gender of MPs, by party, for the given date.
+#' @param house The house of parliament. Defaults to 'Commons'.
+#' @param date A date in yyyy-mm-dd format. Defaults to the current system date.
+#' @param tidy Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to snake_case. Defaults to TRUE.
+#' @return A tibble with information on the numbers and gender of MPs, by party, by party, for the given date.
 #' @keywords mnis
 #' @export
 #' @examples \dontrun{
+#'
 #' x <- mnis_party_state('2012-01-12')
 #'
 #' }
 
-mnis_party_state <- function(House = "Commons", Date = Sys.Date(), tidy = TRUE) {
+mnis_party_state <- function(house = "Commons", date = Sys.Date(), tidy = TRUE) {
     
-    Date <- as.character(Date)
+    date <- as.character(date)
     
-    baseurl <- "http://data.parliament.uk/membersdataplatform/services/mnis/HouseOverview/"
+    baseurl <- "http://data.parliament.uk/membersdataplatform/services/mnis/houseOverview/"
     
-    query <- paste0(baseurl, House, "/", Date, "/")
+    query <- paste0(baseurl, house, "/", date, "/")
     
     got <- httr::GET(query, httr::accept_json())
     
@@ -26,25 +27,17 @@ mnis_party_state <- function(House = "Commons", Date = Sys.Date(), tidy = TRUE) 
         stop("API did not return json", call. = FALSE)
     }
     
-    got <- jsonlite::fromJSON(httr::content(got, "text"), flatten = TRUE)
+    got <- tidy_bom(got)
     
-    x <- as.data.frame(got$HouseOverview)
+    got <- jsonlite::fromJSON(got, flatten = TRUE)
+    
+    x <- tibble::as_tibble(got$HouseOverview)
     
     if (tidy == TRUE) {
         
-        names(x) <- sub("Party.", "", names(x))
+        x <- mnis_tidy(x)
         
-        names(x) <- sub("X.House", "house", names(x))
-        
-        names(x) <- sub(".Id", "party_id", names(x))
-        
-        names(x) <- sub("MaleCount", "male_count", names(x))
-        
-        names(x) <- sub("FemaleCount", "female_count", names(x))
-        
-        names(x) <- sub("TotalCount", "total_count", names(x))
-        
-        names(x) <- tolower(names(x))
+        names(x)[names(x) == "x_house"] <- "house"
         
         x
         
@@ -54,10 +47,4 @@ mnis_party_state <- function(House = "Commons", Date = Sys.Date(), tidy = TRUE) 
         
     }
     
-}
-
-
-mnis_PartyState <- function(House = "Commons", Date = Sys.Date()) {
-    .Deprecated("mnis_PartyState")
-    mnis_party_state(House = House, Date = Date)
 }

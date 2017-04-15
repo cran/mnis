@@ -1,61 +1,70 @@
 
-#' mnis_FullBiog
+#' mnis_full_biog
 #'
-#' Requests all available biographical information for a given member.
-#' @param ID The ID number of the member. Defaults to NULL.
-#' @param mem_id Request based on the default membership ID scheme. Defaults to TRUE.
-#' @param refDods Request based on the DODS membership ID scheme. Defaults to FALSE.
-#' @param tidy Fix the variable names in the data frame to remove '@' characters and superfluous text. Defaults to TRUE.
+#' Requests all available biographical information for a given member, and returns it in the form of a tibble.
+#' @param ID The ID number of the member, using the default MNIS scheme. If \code{ref_dods} is TRUE, accepts the Dods monitoring scheme instead. If left empty, returns the same data as \code{\link{mnis_all_members}}.
+#' @param ref_dods Request based on the Dods monitoring member ID scheme. Defaults to FALSE. If FALSE, requests using the default MNIS identification scheme.
+#' @param tidy Fix the variable names in the tibble to remove non-alphanumeric characters and superfluous text, and convert variable names to snake_case. Defaults to TRUE.
 #' @keywords mnis
 #' @export
 #' @examples \dontrun{
-#' x <- mnis_FullBiog(172)
+#' x <- mnis_full_biog(172)
 #'
 #' }
+#' @seealso \code{\link{mnis_basic_details}} \code{\link{mnis_additional}}
 
-mnis_full_biog <- function(ID = NULL, mem_id = TRUE, refDods = FALSE, tidy = TRUE) {
-
-    ID <- as.character(ID)
-
-    if (refDods == TRUE) {
-        ID_Type <- "refDods="
+mnis_full_biog <- function(ID = NULL, ref_dods = FALSE, tidy = TRUE) {
+    
+    if (missing(ID)) {
+        
+        x <- mnis_all_members()
+        
     } else {
-        ID_Type <- "id="
+        
+        ID <- as.character(ID)
+        
+        if (ref_dods == TRUE) {
+            ID_Type <- "refDods="
+        } else {
+            ID_Type <- "id="
+        }
+        
+        baseurl <- "http://data.parliament.uk/membersdataplatform/services/mnis/members/query/"
+        
+        query <- paste0(baseurl, ID_Type, ID, "/FullBiog")
+        
+        got <- httr::GET(query, httr::accept_json())
+        
+        if (httr::http_type(got) != "application/json") {
+            stop("API did not return json", call. = FALSE)
+        }
+        
+        got <- tidy_bom(got)
+        
+        got <- jsonlite::fromJSON(got, flatten = TRUE)
+        
+        dl <- data.frame(ID = rep(names(got), sapply(got, length)), Obs = unlist(got))
+        
+        x <- t(dl)
+        
+        x <- as.data.frame(x)
+        
+        x <- x[rownames(x) != "ID", ]
+        
+        x <- tibble::as_tibble(x)
+        
     }
-
-    baseurl <- "http://data.parliament.uk/membersdataplatform/services/mnis/members/query/"
-
-    query <- paste0(baseurl, ID_Type, ID, "/FullBiog")
-
-    got <- httr::GET(query, httr::accept_json())
-
-    if (httr::http_type(got) != "application/json") {
-        stop("API did not return json", call. = FALSE)
-    }
-
-    got <- jsonlite::fromJSON(httr::content(got, "text"), flatten = TRUE)
-
-    dl <- data.frame(ID = rep(names(got), sapply(got, length)), Obs = unlist(got))
-
-    x <- t(dl)
-
-    x <- as.data.frame(x)
-
-    x <- x[rownames(x) != "ID", ]
-
+    
     if (tidy == TRUE) {
-
+        
         x <- mnis_tidy(x)
-
-    } else {
-
+        
         x
-
+        
+    } else {
+        
+        x
+        
     }
-
-}
-
-mnis_FullBiog <- function(ID = NULL, mem_id = TRUE, refDods = FALSE, tidy=TRUE) {
-    .Deprecated("mnis_FullBiog")
-    mnis_full_biog(ID = ID, mem_id = mem_id, refDods = refDods, tidy = tidy)
+    
 }
