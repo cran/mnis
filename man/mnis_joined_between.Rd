@@ -5,12 +5,13 @@
 \title{mnis_joined_between}
 \usage{
 mnis_joined_between(start_date = "1900-01-01", end_date = Sys.Date(),
-  house = "all", party = NULL, eligible = "all", tidy = TRUE)
+  house = "all", party = NULL, eligible = "all", tidy = TRUE,
+  tidy_style = "snake_case")
 }
 \arguments{
-\item{start_date}{The start date of the search, in yyyy-mm-dd format. Defaults to '1900-01-01'.}
+\item{start_date}{The start date of the search, Accepts character values in "YYYY-MM-DD" format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}. Defaults to '1900-01-01'.}
 
-\item{end_date}{The end date of the search, in yyyy-mm-dd format. Defaults to the current date.}
+\item{end_date}{The end date of the search. Accepts character values in "YYYY-MM-DD" format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}. Defaults to the current date.}
 
 \item{house}{The house to which the member belongs. Accepts one of 'all', 'lords' and 'commons', defaults to 'all'.}
 
@@ -18,15 +19,16 @@ mnis_joined_between(start_date = "1900-01-01", end_date = Sys.Date(),
 
 \item{eligible}{If the member is currently eligible to sit. Accepts one of 'all', 'current', 'former', defaults to 'all'.}
 
-\item{tidy}{Fix the variable names in the tibble to remove non-alphanumeric characters and superfluous text. Defaults to FALSE.}
+\item{tidy}{Fix the variable names in the tibble to remove non-alphanumeric characters and superfluous text, and convert variable names to a consistent style. Defaults to TRUE.}
+
+\item{tidy_style}{The style to convert variable names to, if tidy=TRUE. Accepts one of "snake_case", "camelCase" and "period.case". Defaults to "snake_case".}
 }
 \description{
 Function returns all members who took their seats in the house between two given dates. The function requests data in JSON format and parses it to a tibble. The
 }
 \examples{
 \dontrun{
-x <- mnis_joined_between(start_date = '2015-01-01', end_date ='2017-01-01',
-                         house='all', party='labour', eligible='all')
+x <- mnis_joined_between(start_date = '2015-01-01', end_date ='2017-01-01', party='labour')
 
 }
 }

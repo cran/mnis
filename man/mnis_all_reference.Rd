@@ -4,10 +4,12 @@
 \alias{mnis_all_reference}
 \title{mnis_all_reference}
 \usage{
-mnis_all_reference(tidy = TRUE)
+mnis_all_reference(tidy = TRUE, tidy_style = "snake_case")
 }
 \arguments{
 \item{tidy}{Fix the variable names in each tibble to remove special characters and superfluous text, and convert all the variable names to snake_case. Defaults to TRUE.}
+
+\item{tidy_style}{The style to convert variable names to, if tidy=TRUE. Accepts one of "snake_case", "camelCase" and "period.case". Defaults to "snake_case".}
 }
 \value{
 Returns a list of 39 tibbles, with the name and data returned from each respective reference function.
@@ -18,7 +20,7 @@ mnis_all_reference
 \examples{
 \dontrun{
 
-mnis_all_reference()
+z <- mnis_all_reference()
 
 }
 }

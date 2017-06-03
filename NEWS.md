@@ -1,9 +1,35 @@
 
+# mnis 0.2.6
+
+Now accepts dates as character values in "YYYY-MM-DD" format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with `as.Date()`.
+
+Fixed bugs on `mnis_joined_between` to return full, proper tibble.
+
+Dropped parameter 'joined_since' from `mnis_all_members`, in favour of `mnis_joined_between`.
+
+Tidied up code in `mnis_reference` functions.
+
+Fixed bug in `mnis_party_state` which produced an error if not using the current system date.
+
+Added optional 'tidy_style' parameter, allowing users to decide which style `"snake_case"`, `"camelCase"` and `"period.case"` they want variable names to be in, if 'tidy'==TRUE.
+
+# mnis 0.2.5
+
+`mnis_mps_on_date` and `mnis_peers_on_date` functions introduced, which return all members of the House of Commons or the House of Lords eligible to sit on a given date.
+
+# mnis 0.2.4
+
+## bug fixes
+
+Bug fixes for constituency names in `mnis_eligible`
+
 # mnis 0.2.3
 
 ## tibbling
 
 `mnis` now uses tibbles instead of data frames as the data class returned from API calls.
+
+Bug fixes for constituency names in `mnis_eligible`
 
 # mnis 0.2.2
 
