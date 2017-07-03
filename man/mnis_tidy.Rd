@@ -2,48 +2,25 @@
 % Please edit documentation in R/mnis_tidy.R
 \name{mnis_tidy}
 \alias{mnis_tidy}
+\alias{member_tidy}
 \alias{ref_tidy}
-\alias{constituency_results_tidy}
-\alias{tidy_bom}
-\alias{date_tidy}
-\title{mnis_tidy}
+\title{Functions to tidy up the variable names returned from the API, and turn dates and datetimes to POSIXct.}
 \usage{
-mnis_tidy(x, tidy_style)
+mnis_tidy(df, tidy_style = "snake_case")
 
-ref_tidy(x, tidy_style)
+member_tidy(df)
 
-constituency_results_tidy(results, details)
-
-tidy_bom(df)
-
-date_tidy(z)
+ref_tidy(df, tidy_style)
 }
 \arguments{
-\item{x}{The tibble to tidy}
+\item{df}{The tibble to tidy.}
 
 \item{tidy_style}{The style to tidy the tibble with.}
-
-\item{results}{The tibble to tidy}
-
-\item{details}{The list to tidy}
-
-\item{df}{The GET returned from call to API.}
-
-\item{z}{The tibble with the undateable dates.}
-}
-\value{
-Functions that optionally, but by default, clean up variable names in all other functions, and a function that removes a needless byte-order mark from the API response.
 }
 \description{
-Internal tidying functions
+Functions to tidy up the variable names returned from the API, and turn dates and datetimes to POSIXct.
+
+member_tidy
 
 ref_tidy
-
-constituency_results_tidy
-
-tidy_bom
-Strips BOM out of JSON data that does not need to be there.
-
-date_tidy
-Makes dates datable
 }

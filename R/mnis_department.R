@@ -1,4 +1,4 @@
-#' mnis_department
+#' Request data on the holders of cabinet/shadow cabinet positions. Request specific departments by department ID (see \code{\link{mnis_reference}} for the \code{ref_department} function to retrieve departmental IDs).
 #'
 #' @param department_id The department look up. 0 returns the cabinet/shadow cabinet, -1 returns a list of all ministers. Defaults to 0.
 #' @param bench Flag to return either Government or Opposition information. Defaults to 'Government'. The API is case sensitive on this parameter, so 'Government' or 'Opposition' will work, but 'government' and 'opposition' will not.
@@ -8,8 +8,10 @@
 #' @return A tibble with information on departments and ministers/shadow ministers.
 #' @keywords mnis
 #' @export
+#' @seealso \code{\link{mnis_reference}}
 #' @examples \dontrun{
-#' x <- mnis_department(departmentId = 0, bench = 'Government', former=TRUE)
+#'
+#' x <- mnis_department(department_id = 0, bench = 'Government', former=TRUE)
 #'
 #' }
 #'

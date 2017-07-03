@@ -5,18 +5,22 @@ test_that("mnis_reference returns expected format", {
 
   skip_on_cran()
 
-  refa <- ref_address_types()
+  refallreferences <- mnis_all_reference()
+  expect_length(refallreferences, 39)
+  expect_type(refallreferences, "list")
+  expect_true(is.list(refallreferences))
 
+  refa <- ref_address_types()
   expect_length(refa, 3)
   expect_type(refa, "list")
   expect_true(tibble::is_tibble(refa))
 
-  refb <- ref_answering_bodies()
+  refb <- ref_answering_bodies(tidy_style = "camelCase")
   expect_length(refb, 17)
   expect_type(refb, "list")
   expect_true(tibble::is_tibble(refb))
 
-  refc <- ref_areas()
+  refc <- ref_areas(tidy_style = "period.case")
   expect_length(refc, 6)
   expect_type(refc, "list")
   expect_true(tibble::is_tibble(refc))
