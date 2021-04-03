@@ -8,10 +8,10 @@ Check these declarations against the C/Fortran source code.
 */
 
 /* .Call calls */
-extern SEXP mnis_mnis_bom(SEXP);
+extern SEXP _mnis_mnis_bom(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-  {"mnis_mnis_bom", (DL_FUNC) &mnis_mnis_bom, 1},
+  {"_mnis_mnis_bom", (DL_FUNC) &_mnis_mnis_bom, 1},
   {NULL, NULL, 0}
 };
 
